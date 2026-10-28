@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Secrets and local config
+.env
+backend/.env
+*.local
+
+# Database & Vector Store
+*.sqlite
+*.sqlite3
+*.db
+backend/data/qdrant_storage/
+backend/data/feedback.db
+qdrant_storage/
+
+# Testing and IDEs
+.pytest_cache/
+.coverage
+htmlcov/
+.vscode/
+.idea/
+
+# Large dataset files (keep raw zip/csv from git tracking if desired)
+*.log
+# Large datasets
+combined_security_dataset_final.zip
+Datasets.zip
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Local database and logs
+feedback.db
+*.log

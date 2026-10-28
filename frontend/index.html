@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SERC — Security Event Response Copilot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-title">
+          <span class="logo-badge">SERC</span>
+          <h1>Security Event Response Copilot</h1>
+        </div>
+        <p class="subtitle">Wazuh Alert Investigation & Evidence-Backed RAG Analysis</p>
+      </div>
+
+      <div class="header-status">
+        <div id="backend-status" class="status-indicator checking">
+          <span class="dot"></span>
+          <span class="status-text">Connecting to backend...</span>
+        </div>
+        <div id="qdrant-status" class="qdrant-pill">
+          <span class="pill-label">Corpus:</span>
+          <span id="corpus-count" class="pill-value">-- vectors</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Analyst Workspace -->
+  <main class="workspace-container">
+
+    <!-- Area A: Alert Selection & Raw Telemetry -->
+    <section class="card section-alert-selection">
+      <div class="card-header">
+        <div class="header-title-group">
+          <span class="section-tag">Area A</span>
+          <h2>Wazuh Security Alert Input</h2>
+        </div>
+        <span class="header-hint">Select a synthetic scenario or upload custom alert JSON</span>
+      </div>
+
+      <div class="selection-controls">
+        <div class="control-group">
+          <label for="sample-select">Sample Alert Scenarios (50+ available):</label>
+          <div class="select-wrapper">
+            <select id="sample-select">
+              <option value="" disabled selected>Loading sample alerts...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-actions">
+          <label class="btn btn-secondary file-upload-btn">
+            <input type="file" id="file-upload-input" accept=".json" style="display: none;">
+            <span>Upload Alert JSON</span>
+          </label>
+          <button id="btn-validate" class="btn btn-secondary">Check Syntax</button>
+          <button id="btn-analyze" class="btn btn-primary" disabled>
+            <span class="btn-spinner" id="analyze-spinner" style="display: none;"></span>
+            <span id="analyze-btn-text">Analyze Alert</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Alert Metadata Overview -->
+      <div id="alert-summary-bar" class="alert-summary-bar" style="display: none;">
+        <div class="summary-item">
+          <span class="label">Rule ID:</span>
+          <span id="meta-rule-id" class="value">--</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Severity Level:</span>
+          <span id="meta-rule-level" class="value badge-level">--</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Agent:</span>
+          <span id="meta-agent-name" class="value">--</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Rule Description:</span>
+          <span id="meta-rule-desc" class="value desc">--</span>
+        </div>
+      </div>
+
+      <!-- Expandable Raw JSON Viewer -->
+      <div class="json-viewer-container">
+        <div class="json-header">
+          <button id="toggle-json-btn" class="toggle-link">
+            <span id="json-toggle-icon">▼</span> Raw Alert JSON
+          </button>
+          <div class="json-actions">
+            <button id="btn-copy-json" class="btn-text">Copy JSON</button>
+          </div>
+        </div>
+        <div id="json-body" class="json-body">
+          <textarea id="raw-json-editor" spellcheck="false" placeholder="Paste or edit raw Wazuh JSON event here..."></textarea>
+        </div>
+        <div id="json-validation-msg" class="validation-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Pipeline Progress / Notice Area -->
+    <section id="pipeline-status-banner" class="pipeline-banner" style="display: none;">
+      <div class="banner-spinner"></div>
+      <div class="banner-content">
+        <h4 id="pipeline-step-title">Executing RAG Investigation Pipeline...</h4>
+        <p id="pipeline-step-desc">Interpreting alert via Pixtral 12B & retrieving cybersecurity evidence.</p>
+      </div>
+    </section>
+
+    <!-- Analysis & Evidence Results Grid -->
+    <div id="results-grid" class="results-grid" style="display: none;">
+
+      <!-- Area B: Analysis Results -->
+      <section class="card section-analysis-results">
+        <div class="card-header">
+          <div class="header-title-group">
+            <span class="section-tag">Area B</span>
+            <h2>Security Investigation Analysis</h2>
+          </div>
+          <div id="simulation-pill" class="badge-pill simulated" style="display: none;">Mock Analysis Engine</div>
+        </div>
+
+        <!-- Plain-Language Interpretation -->
+        <div class="analysis-block">
+          <h3>Alert Interpretation</h3>
+          <p id="alert-plain-explanation" class="text-explanation">--</p>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="analysis-block">
+          <h3>Threat & Risk Assessment</h3>
+          <div class="risk-container">
+            <span id="risk-badge" class="risk-badge">Medium</span>
+            <p id="risk-reason" class="risk-reason-text">--</p>
+          </div>
+        </div>
+
+        <!-- Observed Facts -->
+        <div class="analysis-block">
+          <div class="block-title-row">
+            <h3>Directly Observed Facts</h3>
+            <span class="sub-hint">Extracted strictly from telemetry; not speculative</span>
+          </div>
+          <ul id="observed-facts-list" class="styled-list facts-list">
+            <li>No facts analyzed yet.</li>
+          </ul>
+        </div>
+
+        <!-- Plausible Interpretations & Hypotheses -->
+        <div class="analysis-block">
+          <div class="block-title-row">
+            <h3>Plausible Interpretations & Hypotheses</h3>
+            <span class="sub-hint">Subject to investigation; compromise not declared</span>
+          </div>
+          <ul id="interpretations-list" class="styled-list hypotheses-list">
+            <li>No interpretations generated yet.</li>
+          </ul>
+        </div>
+
+        <!-- MITRE ATT&CK Mappings -->
+        <div class="analysis-block">
+          <h3>MITRE ATT&CK Mappings</h3>
+          <div id="mitre-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Technique ID</th>
+                  <th>Technique Name</th>
+                  <th>Tactic</th>
+                  <th>Mapping Source</th>
+                </tr>
+              </thead>
+              <tbody id="mitre-table-body">
+                <tr><td colspan="4" class="empty-cell">No mappings available.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recommended Investigation Steps -->
+        <div class="analysis-block">
+          <h3>Recommended SOC Investigation Steps</h3>
+          <ol id="investigation-steps-list" class="ordered-steps">
+            <li>Select an alert to generate steps.</li>
+          </ol>
+        </div>
+
+        <!-- Suggested Response Recommendations -->
+        <div class="analysis-block">
+          <div class="block-title-row">
+            <h3>Response & Mitigation Guidance</h3>
+            <span class="warning-tag">Human Review Mandatory</span>
+          </div>
+          <ul id="response-recommendations-list" class="styled-list response-list">
+            <li>No recommendations yet.</li>
+          </ul>
+          <div class="advisory-box">
+            <strong>Analyst Advisory:</strong> Automated destructive responses (account termination, network isolation) are deliberately prohibited. All response actions require approval by a qualified security analyst.
+          </div>
+        </div>
+      </section>
+
+      <!-- Area C: Evidence & Validation (Signature Feature) -->
+      <section class="card section-evidence-validation">
+        <div class="card-header">
+          <div class="header-title-group">
+            <span class="section-tag highlight">Area C</span>
+            <h2>Evidence-Backed Response Validator</h2>
+          </div>
+          <span class="header-hint">Deterministic & semantic claim grounding verification</span>
+        </div>
+
+        <!-- Claim Status Summary Counters -->
+        <div class="validator-summary-bar">
+          <div class="summary-metric">
+            <span class="metric-num" id="count-total">0</span>
+            <span class="metric-label">Total Claims</span>
+          </div>
+          <div class="summary-metric status-supported">
+            <span class="metric-num" id="count-supported">0</span>
+            <span class="metric-label">Supported</span>
+          </div>
+          <div class="summary-metric status-partially">
+            <span class="metric-num" id="count-partial">0</span>
+            <span class="metric-label">Partially Supported</span>
+          </div>
+          <div class="summary-metric status-conflicting">
+            <span class="metric-num" id="count-conflicting">0</span>
+            <span class="metric-label">Conflicting</span>
+          </div>
+          <div class="summary-metric status-insufficient">
+            <span class="metric-num" id="count-insufficient">0</span>
+            <span class="metric-label">Insufficient</span>
+          </div>
+          <div class="summary-metric status-review">
+            <span class="metric-num" id="count-review">0</span>
+            <span class="metric-label">Requires Review</span>
+          </div>
+        </div>
+
+        <!-- Verified Claim Cards -->
+        <div class="claims-section">
+          <h3>Claim-by-Claim Evidence Assessment</h3>
+          <p class="section-desc">Each assertion generated by the LLM is evaluated against the raw Wazuh alert and retrieved dataset records to catch hallucinations and unsupported claims.</p>
+
+          <div id="claims-container" class="claims-container">
+            <p class="empty-state">No claims evaluated yet.</p>
+          </div>
+        </div>
+
+        <!-- Retrieved Cybersecurity Evidence Records -->
+        <div class="evidence-section">
+          <div class="block-title-row">
+            <h3>Retrieved Cybersecurity Dataset Records</h3>
+            <span id="evidence-count-badge" class="badge-pill">0 Records</span>
+          </div>
+          <p class="section-desc">Grounding evidence retrieved via semantic vector similarity (BAAI/bge-large-en-v1.5 + Qdrant) across NIST CSF 2.0 and MITRE ATT&CK.</p>
+          <div class="disclaimer-note">Note: Vector similarity scores reflect semantic relevance, not a probability that a record is correct.</div>
+
+          <div id="evidence-container" class="evidence-container">
+            <p class="empty-state">No evidence records retrieved.</p>
+          </div>
+        </div>
+
+        <!-- Analyst Review / Feedback History -->
+        <div class="feedback-history-section">
+          <h3>Analyst Review History</h3>
+          <div id="feedback-history-list" class="feedback-history-list">
+            <p class="empty-state">No analyst decisions recorded yet for this alert.</p>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Modal / Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span>SERC — Security Event Response Copilot</span>
+      <span class="divider">|</span>
+      <span>Retrieval-Augmented Guidance for Wazuh Security Operations</span>
+      <span class="divider">|</span>
+      <span>Evidence Grounding Verification Active</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
